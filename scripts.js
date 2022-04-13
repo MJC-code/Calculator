@@ -1,20 +1,16 @@
 const calculatorDisplay = document.getElementById("calculatorDisplay");
 
-
-let firstOperand = 0;
-let secondOperand = null;
-let operator = null;
-
+let storedOperand;
+let currentOperator;
+let storedOperator;
 
 clear()
 
-
-
-const add = function (a, b) {
+function add(a, b) {
     return +a + +b;
 }
 
-const subtract = function (a, b) {
+function subtract(a, b) {
     return (+a - +b);
 }
 
@@ -31,9 +27,8 @@ const operate = function (operator, a, b) {
 }
 
 function clear() {
-    firstOperand = 0;
-    secondOperand = null;
-    operator = null;
+    storedOperand = 0;
+    currentOperator = null;
     calculatorDisplay.textContent = '0';
 }
 
@@ -44,8 +39,30 @@ function backspace() {
     }
 }
 
+function equals() {
+    result = operate(plus, storedOperand, calculatorDisplay.textContent);
+    storedOperand = result;
+    calculatorDisplay.textContent = result;
+    return;
+
+}
+
+function plus() {
+    calculatorDisplay.textContent = add(+calculatorDisplay.textContent, +storedOperand);
+    storedOperand = calculatorDisplay.textContent;
+    storedOperator = "add"
+    currentOperator = "add";
+    
+}
+
+
 function updateDisplay(keypress) {
- 
+    if (currentOperator !== "plus") {
+        calculatorDisplay.textContent = "";
+        currentOperator = null;
+    }
+
+
     if (Number.isInteger(parseInt(keypress))) {
         if (calculatorDisplay.textContent !== "0") {
             calculatorDisplay.textContent += keypress;
@@ -86,16 +103,13 @@ function updateDisplay(keypress) {
         buttonPoint.addEventListener("click", function () {
             updateDisplay('.');
         })
-        const buttonEquals = document.getElementById("equals")
-        buttonEquals.addEventListener("click", function () {
-            updateDisplay('=');
-        })
 
         const buttonPlus = document.getElementById("plus")
-        buttonPlus.addEventListener("click", function () {
-            updateDisplay('+');
-        })
+        buttonPlus.addEventListener("click", plus);
 
+
+        const buttonEquals = document.getElementById("equals")
+        buttonEquals.addEventListener("click", equals);
 
         const buttonClear = document.getElementById("clear")
         buttonClear.addEventListener("click", clear);
