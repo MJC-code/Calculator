@@ -37,25 +37,28 @@ function clear() {
     calculatorDisplay.textContent = '0';
 }
 
-function firstOperandExists() {
-    if (firstOperand !== null) return true;
-    return false;
+function backspace() {
+    if (calculatorDisplay.textContent !== '0') {
+        calculatorDisplay.textContent = calculatorDisplay.textContent.slice(0, -1) // remove last character
+        if (!calculatorDisplay.textContent) {calculatorDisplay.textContent = '0'}  // don't allow empty display
+    }
 }
 
-
-
 function updateDisplay(keypress) {
-    if (keypress === '+') {
-        console.log('You pushed a sign')
-        return
-    }
-
+ 
     if (Number.isInteger(parseInt(keypress))) {
         if (calculatorDisplay.textContent !== "0") {
             calculatorDisplay.textContent += keypress;
             return;
         } else {
             calculatorDisplay.textContent = keypress;
+            return
+        }
+    }
+
+    if (keypress === ".") {
+        if (!calculatorDisplay.textContent.includes(".")) { 
+        calculatorDisplay.textContent += '.'
         }
     }
 }
@@ -79,6 +82,10 @@ function updateDisplay(keypress) {
             updateDisplay('0');
         })
 
+        const buttonPoint = document.getElementById("point")
+        buttonPoint.addEventListener("click", function () {
+            updateDisplay('.');
+        })
         const buttonEquals = document.getElementById("equals")
         buttonEquals.addEventListener("click", function () {
             updateDisplay('=');
@@ -92,6 +99,9 @@ function updateDisplay(keypress) {
 
         const buttonClear = document.getElementById("clear")
         buttonClear.addEventListener("click", clear);
+
+        const buttonBackspace= document.getElementById("backspace")
+        buttonBackspace.addEventListener("click", backspace);
 
 
 
