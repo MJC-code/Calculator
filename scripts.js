@@ -1,10 +1,94 @@
 const calculatorDisplay = document.getElementById("calculatorDisplay");
 
-let storedOperand;
-let currentOperator;
-let storedOperator;
 
-clear()
+let storedOperand = 0;
+let displayValue = 0;
+let expectingNewOperand = false;
+let operator = null;
+
+const button1 = document.getElementById("1")
+button1.addEventListener("click", function () {
+    buttonHandler('1');
+})
+
+const button2 = document.getElementById("2")
+button2.addEventListener("click", function () {
+    buttonHandler('2');
+})
+
+const button0 = document.getElementById("0")
+button0.addEventListener("click", function () {
+    buttonHandler('0');
+})
+
+const pointButton = document.getElementById("pointButton")
+pointButton.addEventListener("click", function () {
+    buttonHandler('.');
+})
+
+const addButton = document.getElementById("addButton")
+addButton.addEventListener("click", function () {
+    buttonHandler('add');
+})
+
+const equalsButton = document.getElementById("equalsButton")
+equalsButton.addEventListener("click", function () {
+    buttonHandler('equals');
+})
+
+const clearButton = document.getElementById("clearButton")
+clearButton.addEventListener("click", function () {
+    buttonHandler('clear');
+})
+
+
+const backspaceButton = document.getElementById("backspaceButton")
+backspaceButton.addEventListener("click", function () {
+    buttonHandler('backspace');
+})
+
+
+function buttonHandler(buttonPushed) {
+
+    if (+buttonPushed) {
+        console.log("received the digit", buttonPushed);
+        if (expectingNewOperand === true) {
+            expectingNewOperand = false;
+            console.log('condition reached');
+            displayValue = buttonPushed;
+        }
+        else {
+            displayValue += buttonPushed;
+        }
+
+    }
+
+    if (buttonPushed === 'add') {
+        console.log('Entering add function. Stored operand: ' + storedOperand +' displayValue:' + displayValue);
+        expectingNewOperand = true;
+
+        displayValue = add(storedOperand, displayValue)
+        storedOperand = displayValue;
+       
+    }
+
+
+
+    console.log('Reached bottom of buttonHandler function. displayValue is: ' + displayValue);
+    calculatorDisplay.textContent = displayValue;
+}
+
+
+
+
+/* function backspace() {
+    if (calculatorDisplay.textContent !== '0') {
+        calculatorDisplay.textContent = calculatorDisplay.textContent.slice(0, -1) // remove last character
+        if (!calculatorDisplay.textContent) { calculatorDisplay.textContent = '0' }  // don't allow empty display
+    }
+}
+ */
+
 
 function add(a, b) {
     return +a + +b;
@@ -22,102 +106,8 @@ const divide = function (a, b) {
     return (+a / +b);
 }
 
-const operate = function (operator, a, b) {
+function operate(operator, a, b) {
     return operator(a, b);
 }
-
-function clear() {
-    storedOperand = 0;
-    currentOperator = null;
-    calculatorDisplay.textContent = '0';
-}
-
-function backspace() {
-    if (calculatorDisplay.textContent !== '0') {
-        calculatorDisplay.textContent = calculatorDisplay.textContent.slice(0, -1) // remove last character
-        if (!calculatorDisplay.textContent) {calculatorDisplay.textContent = '0'}  // don't allow empty display
-    }
-}
-
-function equals() {
-    result = operate(plus, storedOperand, calculatorDisplay.textContent);
-    storedOperand = result;
-    calculatorDisplay.textContent = result;
-    return;
-
-}
-
-function plus() {
-    calculatorDisplay.textContent = add(+calculatorDisplay.textContent, +storedOperand);
-    storedOperand = calculatorDisplay.textContent;
-    storedOperator = "add"
-    currentOperator = "add";
-    
-}
-
-
-function updateDisplay(keypress) {
-    if (currentOperator !== "plus") {
-        calculatorDisplay.textContent = "";
-        currentOperator = null;
-    }
-
-
-    if (Number.isInteger(parseInt(keypress))) {
-        if (calculatorDisplay.textContent !== "0") {
-            calculatorDisplay.textContent += keypress;
-            return;
-        } else {
-            calculatorDisplay.textContent = keypress;
-            return
-        }
-    }
-
-    if (keypress === ".") {
-        if (!calculatorDisplay.textContent.includes(".")) { 
-        calculatorDisplay.textContent += '.'
-        }
-    }
-}
-
-
-
-
-
-        const button1 = document.getElementById("1")
-        button1.addEventListener("click", function () {
-            updateDisplay('1');
-        })
-
-        const button2 = document.getElementById("2")
-        button2.addEventListener("click", function () {
-            updateDisplay('2');
-        })
-
-        const button0 = document.getElementById("0")
-        button0.addEventListener("click", function () {
-            updateDisplay('0');
-        })
-
-        const buttonPoint = document.getElementById("point")
-        buttonPoint.addEventListener("click", function () {
-            updateDisplay('.');
-        })
-
-        const buttonPlus = document.getElementById("plus")
-        buttonPlus.addEventListener("click", plus);
-
-
-        const buttonEquals = document.getElementById("equals")
-        buttonEquals.addEventListener("click", equals);
-
-        const buttonClear = document.getElementById("clear")
-        buttonClear.addEventListener("click", clear);
-
-        const buttonBackspace= document.getElementById("backspace")
-        buttonBackspace.addEventListener("click", backspace);
-
-
-
 
 
