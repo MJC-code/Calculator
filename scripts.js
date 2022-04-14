@@ -54,7 +54,6 @@ function buttonHandler(buttonPushed) {
         console.log("received the digit", buttonPushed);
         if (expectingNewOperand === true) {
             expectingNewOperand = false;
-            console.log('condition reached');
             displayValue = buttonPushed;
         }
         else {
@@ -64,12 +63,13 @@ function buttonHandler(buttonPushed) {
     }
 
     if (buttonPushed === 'add') {
+        if(expectingNewOperand === false) {
         console.log('Entering add function. Stored operand: ' + storedOperand +' displayValue:' + displayValue);
         expectingNewOperand = true;
 
-        displayValue = add(storedOperand, displayValue)
+        displayValue = operate(buttonPushed, storedOperand, displayValue)
         storedOperand = displayValue;
-       
+    }
     }
 
 
@@ -107,7 +107,7 @@ const divide = function (a, b) {
 }
 
 function operate(operator, a, b) {
-    return operator(a, b);
+    if (operator === 'add') return add(a, b);
 }
 
 
