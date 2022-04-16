@@ -1,24 +1,29 @@
 const calculatorDisplay = document.getElementById("calculatorDisplay");
 
-
+const operators = ['add', 'subtract', 'multiply', 'divide']
 let storedOperand = 0;
 let displayValue = 0;
 let expectingNewOperand = false;
 let operator = null;
+let previousOperator = null;
 
 const button1 = document.getElementById("1")
 button1.addEventListener("click", function () {
-    buttonHandler('1');
+    buttonHandler(this.id);
 })
 
 const button2 = document.getElementById("2")
 button2.addEventListener("click", function () {
-    buttonHandler('2');
+    buttonHandler(this.id);
 })
 
+const button3 = document.getElementById("3")
+button3.addEventListener("click", function () {
+    buttonHandler(this.id);
+})
 const button0 = document.getElementById("0")
 button0.addEventListener("click", function () {
-    buttonHandler('0');
+    buttonHandler(this.id);
 })
 
 const pointButton = document.getElementById("pointButton")
@@ -29,6 +34,21 @@ pointButton.addEventListener("click", function () {
 const addButton = document.getElementById("addButton")
 addButton.addEventListener("click", function () {
     buttonHandler('add');
+})
+
+const subtractButton = document.getElementById("subtractButton")
+subtractButton.addEventListener("click", function () {
+    buttonHandler('subtract');
+})
+
+const multiplyButton = document.getElementById("multiplyButton")
+multiplyButton.addEventListener("click", function () {
+    buttonHandler('multiply');
+})
+
+const divideButton = document.getElementById("divideButton")
+divideButton.addEventListener("click", function () {
+    buttonHandler('divide');
 })
 
 const equalsButton = document.getElementById("equalsButton")
@@ -62,14 +82,8 @@ function buttonHandler(buttonPushed) {
 
     }
 
-    if (buttonPushed === 'add') {
-        if(expectingNewOperand === false) {
-        console.log('Entering add function. Stored operand: ' + storedOperand +' displayValue:' + displayValue);
-        expectingNewOperand = true;
-
-        displayValue = operate(buttonPushed, storedOperand, displayValue)
-        storedOperand = displayValue;
-    }
+    if (operators.includes(buttonPushed)) {
+        console.log('Received the operator: ' + buttonPushed)
     }
 
 
@@ -89,6 +103,14 @@ function buttonHandler(buttonPushed) {
 }
  */
 
+function operate(operator, a, b) {
+    if (operator === 'add') return add(a, b);
+    if (operator === 'subtract') return subtract(a, b);
+    if (operator === 'multiply') return multiply(a, b);
+    if (operator === 'divide') return divide(a,b);
+    console.log('Operator not recognised')
+}
+
 
 function add(a, b) {
     return +a + +b;
@@ -106,8 +128,6 @@ const divide = function (a, b) {
     return (+a / +b);
 }
 
-function operate(operator, a, b) {
-    if (operator === 'add') return add(a, b);
-}
+
 
 
