@@ -4,7 +4,7 @@ const operators = ['add', 'subtract', 'multiply', 'divide']
 const digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 
 let displayValue = '0';
-let storedEntries = ['0']
+let storedEntries = []
 
 
 document.getElementById('buttons').addEventListener('click', event => {
@@ -18,7 +18,14 @@ function eventHandler(button) {
     console.log('Event handler received button push: ' + button);
 
     let previousEntry = storedEntries[storedEntries.length - 1];
-   
+
+    if (button === 'equals') {
+        let result = operate(storedEntries[storedEntries.length - 3],
+            storedEntries[storedEntries.length - 2],
+            storedEntries[storedEntries.length - 1])
+            displayValue = result;
+    }
+
     if (button === 'backspace') {
         displayValue = displayValue.slice(0, -1);
         if (displayValue === '') displayValue = '0';
@@ -36,12 +43,15 @@ function eventHandler(button) {
         if (!displayValue.startsWith('-')) {
             displayValue = '-' + displayValue;
         }
-        else displayValue = displayValue.slice(1, );
+        else displayValue = displayValue.slice(1,);
     }
 
-
+    if (operators.includes(button)) {
+        storedEntries.push(displayValue);
+        storedEntries.push(button);
+    }
     if (digits.includes(button)) {
-        if (operators.includes(storedEntries[storedEntries.length -1])) {
+        if (operators.includes(storedEntries[storedEntries.length - 1])) {
             displayValue = '0';
             storedEntries.push(button)
         }
@@ -52,12 +62,7 @@ function eventHandler(button) {
         else displayValue += button;
     }
 
-    if (operators.includes(button)) {
-        storedEntries.push(displayValue);
-        storedEntries.push(button);
 
-
-    }
 
     calculatorDisplay.textContent = displayValue;
 }
@@ -70,14 +75,13 @@ function clear() {
 }
 
 
-function operate(operator, a, b) {
+function operate(a, operator, b) {
     if (operator === 'add') return add(a, b);
     if (operator === 'subtract') return subtract(a, b);
     if (operator === 'multiply') return multiply(a, b);
     if (operator === 'divide') return divide(a, b);
     console.log('Error - Operator not recognised')
 }
-
 
 function add(a, b) {
     return +a + +b;
