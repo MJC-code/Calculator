@@ -1,11 +1,12 @@
 const calculatorDisplay = document.getElementById("calculatorDisplay");
 
-const operators = ['add', 'subtract', 'multiply', 'divide']
+const operators = ['add', 'subtract', 'multiply', 'divide', 'equals']
 const digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 
 let displayValue = '0';
-let storedEntries = []
-
+let storedNumber = '';
+let storedOperator = '';
+let previousKeypress = '';
 
 document.getElementById('buttons').addEventListener('click', event => {
     if (event.target.type === "button") eventHandler(event.target.id)
@@ -15,24 +16,22 @@ document.getElementById('buttons').addEventListener('click', event => {
 function eventHandler(button) {
     if (typeof displayValue === "number") { displayValue = displayValue.toString() }
 
-    console.log('Event handler received button push: ' + button);
+    console.log(`eventHandler received button push: ${button}. previousKeypress: ${previousKeypress}.
+    storedNumber: ${storedNumber}   storedOperator: ${storedOperator}`);
+   
 
-    let previousEntry = storedEntries[storedEntries.length - 1];
-
-    if (button === 'equals') {
-        let result = operate(storedEntries[storedEntries.length - 3],
-            storedEntries[storedEntries.length - 2],
-            storedEntries[storedEntries.length - 1])
-            displayValue = result;
-    }
 
     if (button === 'backspace') {
+        
         displayValue = displayValue.slice(0, -1);
         if (displayValue === '') displayValue = '0';
     }
 
     if (button === 'clear') {
-        clear();
+        console.log('Entered clear function');
+        displayValue = 0;
+        storedNumber = '';
+        storedOperator = '';
     }
 
     if (button === 'point') {
@@ -46,58 +45,76 @@ function eventHandler(button) {
         else displayValue = displayValue.slice(1,);
     }
 
-    if (operators.includes(button)) {
-        storedEntries.push(displayValue);
-        storedEntries.push(button);
-    }
+
     if (digits.includes(button)) {
-        if (operators.includes(storedEntries[storedEntries.length - 1])) {
-            displayValue = '0';
-            storedEntries.push(button)
+        if (displayValue == '0' || operators.includes(previousKeypress)) {
+            displayValue = button;
+
+        } else { displayValue += button }
+    }
+
+
+    if (operators.includes(button)) {
+
+        if (button === 'equals') {
+            let result = operate(storedNumber, storedOperator, displayValue)
+            displayValue = result;
+            storedNumber = result;
+            //storedOperator = '';
+            calculatorDisplay.textContent = displayValue;
+            previousKeypress = button;
+            return;
         }
 
-        if (displayValue == '0') {
-            displayValue = button;
+        else if (storedNumber && storedOperator) {
+            let result = operate(storedNumber, storedOperator, displayValue);
+            displayValue = result;
+            storedNumber = result;
+            storedOperator = button;
         }
-        else displayValue += button;
+        else {
+            storedNumber = displayValue;
+            storedOperator = button;
+        }
     }
 
 
 
-    calculatorDisplay.textContent = displayValue;
-}
 
 
-function clear() {
-    console.log('Entered clear function');
-    displayValue = 0;
-    inputs = [0];
-}
+        previousKeypress = button;
+        calculatorDisplay.textContent = displayValue;
+        console.log(`Reached end of eventHandler. previousKeypress: ${previousKeypress}.
+    storedNumber: ${storedNumber}   storedOperator: ${storedOperator}`)
+    }
 
 
-function operate(a, operator, b) {
-    if (operator === 'add') return add(a, b);
-    if (operator === 'subtract') return subtract(a, b);
-    if (operator === 'multiply') return multiply(a, b);
-    if (operator === 'divide') return divide(a, b);
-    console.log('Error - Operator not recognised')
-}
 
-function add(a, b) {
-    return +a + +b;
-}
 
-function subtract(a, b) {
-    return (+a - +b);
-}
+    function operate(a, operator, b) {
+        console.log(`operate function received: a ${a}   operator: ${operator}   b: ${b}`)
+        if (operator === 'add') return add(a, b);
+        if (operator === 'subtract') return subtract(a, b);
+        if (operator === 'multiply') return multiply(a, b);
+        if (operator === 'divide') return divide(a, b);
+        console.log('Error - Operator not recognised')
+    }
 
-const multiply = function (a, b) {
-    return (+a * +b);
-}
+    function add(a, b) {
+        return parseFloat(a) + parseFloat(b);
+    }
 
-const divide = function (a, b) {
-    return (+a / +b);
-}
+    function subtract(a, b) {
+        return parseFloat(a) - parseFloat(b);
+    }
+
+    const multiply = function (a, b) {
+        return parseFloat(a) * parseFloat(b);
+    }
+
+    const divide = function (a, b) {
+        return parseFloat(a) / parseFloat(b);
+    }
 
 
 
