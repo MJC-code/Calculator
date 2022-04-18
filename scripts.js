@@ -62,8 +62,8 @@ function eventHandler(button) {
         storedNumber = ''
         calculatorDisplay.textContent = displayValue;
         previousKeypress = 'equals';
-        console.log(`Reached end of eventHandler. previousKeypress: ${previousKeypress}.
-storedNumber: ${storedNumber}   storedOperator: ${storedOperator}`)
+       /*  console.log(`Reached end of eventHandler. previousKeypress: ${previousKeypress}.
+storedNumber: ${storedNumber}   storedOperator: ${storedOperator}`) */
         return;
     }
 
@@ -73,7 +73,6 @@ storedNumber: ${storedNumber}   storedOperator: ${storedOperator}`)
 
 
         if (storedNumber && storedOperator) {
-            console.log('middle condition of equals')
             let result = operate(storedNumber, storedOperator, displayValue);
             displayValue = result;
             storedNumber = result;
@@ -81,7 +80,6 @@ storedNumber: ${storedNumber}   storedOperator: ${storedOperator}`)
            
         }
         else {
-            console.log('bottom condition of equals')
             storedNumber = displayValue;
             storedOperator = button;
         }
@@ -89,15 +87,15 @@ storedNumber: ${storedNumber}   storedOperator: ${storedOperator}`)
 
     previousKeypress = button;
     calculatorDisplay.textContent = displayValue;
-    console.log(`Reached end of eventHandler. previousKeypress: ${previousKeypress}.
-    storedNumber: ${storedNumber}   storedOperator: ${storedOperator}`)
+    /* console.log(`Reached end of eventHandler. previousKeypress: ${previousKeypress}.
+    storedNumber: ${storedNumber}   storedOperator: ${storedOperator}`) */
 }
 
 
 
 
 function operate(a, operator, b) {
-    console.log(`operate function received a: ${a}   operator: ${operator}   b: ${b}`)
+   // console.log(`operate function received a: ${a}   operator: ${operator}   b: ${b}`)
     if (operator === 'add') return add(a, b);
     if (operator === 'subtract') return subtract(a, b);
     if (operator === 'multiply') return multiply(a, b);
