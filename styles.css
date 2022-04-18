@@ -1,19 +1,21 @@
 * {
     box-sizing: border-box;
-    font-family: Gotham Rounded, sans-serif;    
-  }
+    font-family: monospace;
+    font-size: 36px;
+}
 
 #gridContainer {
     display: grid;
+    grid-template-columns: 1;
+    grid-template-rows: 2;
 }
 
 #buttons {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
-  gap: 10px;
-  grid-template-rows: 5;
+    grid-template-columns: repeat(4, 100px);
+    grid-template-rows: repeat(5, 100px);
 }
 
 button {
-    font-size: 32px;
+    font-size: 24px;
 }

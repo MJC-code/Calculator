@@ -46,6 +46,8 @@ function eventHandler(button) {
     }
 
     if (button === 'equals') {
+        if(!storedOperator) {return};
+
         if (previousKeypress === 'equals') {
             displayValue = operate(displayValue, repeatMemory[1], repeatMemory[0]);
             calculatorDisplay.textContent = displayValue;
