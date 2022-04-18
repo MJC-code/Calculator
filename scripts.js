@@ -7,6 +7,7 @@ let displayValue = '0';
 let storedNumber = '';
 let storedOperator = '';
 let previousKeypress = '';
+let repeatMemory = [];
 
 document.getElementById('buttons').addEventListener('click', event => {
     if (event.target.type === "button") eventHandler(event.target.id)
@@ -25,7 +26,7 @@ function eventHandler(button) {
     }
 
     if (button === 'clear') {
-        console.log('Entered clear function');
+        // console.log('Entered clear function');
         displayValue = 0;
         storedNumber = '';
         storedOperator = '';
@@ -48,20 +49,26 @@ function eventHandler(button) {
         } else { displayValue += button }
     }
 
+    if (button === 'equals') {
+
+        let result = operate(storedNumber, storedOperator, displayValue)
+        displayValue = result;
+        storedNumber = ''
+        calculatorDisplay.textContent = displayValue;
+        previousKeypress = button;
+        console.log(`Reached end of eventHandler. previousKeypress: ${previousKeypress}.
+storedNumber: ${storedNumber}   storedOperator: ${storedOperator}`)
+        return;
+    }
+
+
 
     if (operators.includes(button)) {
-        if (button === 'equals') {
-       
-            if (previousKeypress === button) { return; }
 
-            let result = operate(storedNumber, storedOperator, displayValue)
-            displayValue = result;
-            calculatorDisplay.textContent = displayValue;
-            previousKeypress = button;
-            return;
-        }
 
-        else if (storedNumber && storedOperator) {
+        if (storedNumber && storedOperator) {
+            console.log('middle condition of equals')
+
             let result = operate(storedNumber, storedOperator, displayValue);
             displayValue = result;
             storedNumber = result;
@@ -69,6 +76,7 @@ function eventHandler(button) {
             previousKeypress = button;
         }
         else {
+            console.log('bottom condition of equals')
             storedNumber = displayValue;
             storedOperator = button;
         }
