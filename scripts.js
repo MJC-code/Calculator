@@ -17,9 +17,9 @@ document.getElementById('buttons').addEventListener('click', event => {
 function eventHandler(button) {
     if (typeof displayValue === "number") { displayValue = displayValue.toString() }
 
-    console.log(`eventHandler received button push: ${button}. previousKeypress: ${previousKeypress}.
+/*     console.log(`eventHandler received button push: ${button}. previousKeypress: ${previousKeypress}.
     storedNumber: ${storedNumber}   storedOperator: ${storedOperator}`);
-
+ */
     if (button === 'backspace') {
         displayValue = displayValue.slice(0, -1);
         if (displayValue === '') displayValue = '0';
@@ -50,12 +50,18 @@ function eventHandler(button) {
     }
 
     if (button === 'equals') {
+        if (previousKeypress === 'equals') {
+            displayValue = operate(repeatMemory[0], repeatMemory[1], displayValue);
+            calculatorDisplay.textContent = displayValue;
+            return;
+        }
 
+        repeatMemory = [displayValue, storedOperator];
         let result = operate(storedNumber, storedOperator, displayValue)
         displayValue = result;
         storedNumber = ''
         calculatorDisplay.textContent = displayValue;
-        previousKeypress = button;
+        previousKeypress = 'equals';
         console.log(`Reached end of eventHandler. previousKeypress: ${previousKeypress}.
 storedNumber: ${storedNumber}   storedOperator: ${storedOperator}`)
         return;
@@ -68,12 +74,11 @@ storedNumber: ${storedNumber}   storedOperator: ${storedOperator}`)
 
         if (storedNumber && storedOperator) {
             console.log('middle condition of equals')
-
             let result = operate(storedNumber, storedOperator, displayValue);
             displayValue = result;
             storedNumber = result;
             storedOperator = button;
-            previousKeypress = button;
+           
         }
         else {
             console.log('bottom condition of equals')
@@ -92,7 +97,7 @@ storedNumber: ${storedNumber}   storedOperator: ${storedOperator}`)
 
 
 function operate(a, operator, b) {
-    console.log(`operate function received: a ${a}   operator: ${operator}   b: ${b}`)
+    console.log(`operate function received a: ${a}   operator: ${operator}   b: ${b}`)
     if (operator === 'add') return add(a, b);
     if (operator === 'subtract') return subtract(a, b);
     if (operator === 'multiply') return multiply(a, b);
