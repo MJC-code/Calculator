@@ -18,11 +18,8 @@ function eventHandler(button) {
 
     console.log(`eventHandler received button push: ${button}. previousKeypress: ${previousKeypress}.
     storedNumber: ${storedNumber}   storedOperator: ${storedOperator}`);
-   
-
 
     if (button === 'backspace') {
-        
         displayValue = displayValue.slice(0, -1);
         if (displayValue === '') displayValue = '0';
     }
@@ -45,22 +42,20 @@ function eventHandler(button) {
         else displayValue = displayValue.slice(1,);
     }
 
-
     if (digits.includes(button)) {
         if (displayValue == '0' || operators.includes(previousKeypress)) {
             displayValue = button;
-
         } else { displayValue += button }
     }
 
 
     if (operators.includes(button)) {
-
         if (button === 'equals') {
+       
+            if (previousKeypress === button) { return; }
+
             let result = operate(storedNumber, storedOperator, displayValue)
             displayValue = result;
-            storedNumber = result;
-            //storedOperator = '';
             calculatorDisplay.textContent = displayValue;
             previousKeypress = button;
             return;
@@ -71,6 +66,7 @@ function eventHandler(button) {
             displayValue = result;
             storedNumber = result;
             storedOperator = button;
+            previousKeypress = button;
         }
         else {
             storedNumber = displayValue;
@@ -78,43 +74,39 @@ function eventHandler(button) {
         }
     }
 
-
-
-
-
-        previousKeypress = button;
-        calculatorDisplay.textContent = displayValue;
-        console.log(`Reached end of eventHandler. previousKeypress: ${previousKeypress}.
+    previousKeypress = button;
+    calculatorDisplay.textContent = displayValue;
+    console.log(`Reached end of eventHandler. previousKeypress: ${previousKeypress}.
     storedNumber: ${storedNumber}   storedOperator: ${storedOperator}`)
-    }
+}
 
 
 
 
-    function operate(a, operator, b) {
-        console.log(`operate function received: a ${a}   operator: ${operator}   b: ${b}`)
-        if (operator === 'add') return add(a, b);
-        if (operator === 'subtract') return subtract(a, b);
-        if (operator === 'multiply') return multiply(a, b);
-        if (operator === 'divide') return divide(a, b);
-        console.log('Error - Operator not recognised')
-    }
+function operate(a, operator, b) {
+    console.log(`operate function received: a ${a}   operator: ${operator}   b: ${b}`)
+    if (operator === 'add') return add(a, b);
+    if (operator === 'subtract') return subtract(a, b);
+    if (operator === 'multiply') return multiply(a, b);
+    if (operator === 'divide') return divide(a, b);
+    console.log('Error - Operator not recognised')
+}
 
-    function add(a, b) {
-        return parseFloat(a) + parseFloat(b);
-    }
+function add(a, b) {
+    return parseFloat(a) + parseFloat(b);
+}
 
-    function subtract(a, b) {
-        return parseFloat(a) - parseFloat(b);
-    }
+function subtract(a, b) {
+    return parseFloat(a) - parseFloat(b);
+}
 
-    const multiply = function (a, b) {
-        return parseFloat(a) * parseFloat(b);
-    }
+const multiply = function (a, b) {
+    return parseFloat(a) * parseFloat(b);
+}
 
-    const divide = function (a, b) {
-        return parseFloat(a) / parseFloat(b);
-    }
+const divide = function (a, b) {
+    return parseFloat(a) / parseFloat(b);
+}
 
 
 
