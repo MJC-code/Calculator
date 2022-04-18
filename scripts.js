@@ -17,16 +17,12 @@ document.getElementById('buttons').addEventListener('click', event => {
 function eventHandler(button) {
     if (typeof displayValue === "number") { displayValue = displayValue.toString() }
 
-/*     console.log(`eventHandler received button push: ${button}. previousKeypress: ${previousKeypress}.
-    storedNumber: ${storedNumber}   storedOperator: ${storedOperator}`);
- */
     if (button === 'backspace') {
         displayValue = displayValue.slice(0, -1);
         if (displayValue === '') displayValue = '0';
     }
 
     if (button === 'clear') {
-        // console.log('Entered clear function');
         displayValue = 0;
         storedNumber = '';
         storedOperator = '';
@@ -51,7 +47,7 @@ function eventHandler(button) {
 
     if (button === 'equals') {
         if (previousKeypress === 'equals') {
-            displayValue = operate(repeatMemory[0], repeatMemory[1], displayValue);
+            displayValue = operate(displayValue, repeatMemory[1], repeatMemory[0]);
             calculatorDisplay.textContent = displayValue;
             return;
         }
@@ -62,15 +58,12 @@ function eventHandler(button) {
         storedNumber = ''
         calculatorDisplay.textContent = displayValue;
         previousKeypress = 'equals';
-       /*  console.log(`Reached end of eventHandler. previousKeypress: ${previousKeypress}.
-storedNumber: ${storedNumber}   storedOperator: ${storedOperator}`) */
         return;
     }
 
 
 
     if (operators.includes(button)) {
-
 
         if (storedNumber && storedOperator) {
             let result = operate(storedNumber, storedOperator, displayValue);
@@ -87,15 +80,12 @@ storedNumber: ${storedNumber}   storedOperator: ${storedOperator}`) */
 
     previousKeypress = button;
     calculatorDisplay.textContent = displayValue;
-    /* console.log(`Reached end of eventHandler. previousKeypress: ${previousKeypress}.
-    storedNumber: ${storedNumber}   storedOperator: ${storedOperator}`) */
+
 }
 
 
-
-
 function operate(a, operator, b) {
-   // console.log(`operate function received a: ${a}   operator: ${operator}   b: ${b}`)
+
     if (operator === 'add') return add(a, b);
     if (operator === 'subtract') return subtract(a, b);
     if (operator === 'multiply') return multiply(a, b);
