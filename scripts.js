@@ -1,6 +1,6 @@
 const calculatorDisplay = document.getElementById("calculatorDisplay");
 
-const operators = ['add', 'subtract', 'multiply', 'divide', 'equals']
+const operators = ['add', 'subtract', 'multiply', 'divide']
 const digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 
 let displayValue = '0';
@@ -8,6 +8,7 @@ let storedNumber = '';
 let storedOperator = '';
 let previousKeypress = '';
 let repeatMemory = [];
+const displayLengthInDigits = 11;
 
 document.getElementById('buttons').addEventListener('click', event => {
     if (event.target.type === "button") eventHandler(event.target.id)
@@ -26,6 +27,7 @@ function eventHandler(button) {
         displayValue = 0;
         storedNumber = '';
         storedOperator = '';
+        repeatMemory = [];
     }
 
     if (button === 'point') {
@@ -40,17 +42,20 @@ function eventHandler(button) {
     }
 
     if (digits.includes(button)) {
-        if (displayValue == '0' || operators.includes(previousKeypress)) {
-            displayValue = button;
-        } else { displayValue += button }
+        if (displayValue.length < displayLengthInDigits) {
+            if (displayValue == '0' || operators.includes(previousKeypress)) {
+                displayValue = button;
+            } else { displayValue += button }
+        }
     }
 
     if (button === 'equals') {
-        if(!storedOperator) {return};
+        if (!storedOperator) { return };
 
         if (previousKeypress === 'equals') {
             displayValue = operate(displayValue, repeatMemory[1], repeatMemory[0]);
             calculatorDisplay.textContent = displayValue;
+            operator = '';
             return;
         }
 
@@ -59,20 +64,20 @@ function eventHandler(button) {
         displayValue = result;
         calculatorDisplay.textContent = displayValue;
         previousKeypress = 'equals';
-        storedOperator = ''
+        //storedOperator = ''
         return;
     }
 
 
 
     if (operators.includes(button)) {
-
-        if (storedNumber && storedOperator) {
+        repeatMemory = [displayValue, storedOperator];
+        if (storedNumber && storedOperator && previousKeypress != 'equals') {
             let result = operate(storedNumber, storedOperator, displayValue);
             displayValue = result;
             storedNumber = result;
             storedOperator = button;
-           
+
         }
         else {
             storedNumber = displayValue;
@@ -81,9 +86,12 @@ function eventHandler(button) {
     }
 
     previousKeypress = button;
+
     calculatorDisplay.textContent = displayValue;
 
 }
+
+
 
 
 function operate(a, operator, b) {
