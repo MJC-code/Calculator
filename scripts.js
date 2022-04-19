@@ -42,6 +42,7 @@ function eventHandler(button) {
     }
 
     if (digits.includes(button)) {
+        
         if (displayValue.length < displayLengthInDigits) {
             if (displayValue == '0' || operators.includes(previousKeypress)) {
                 displayValue = button;
@@ -54,7 +55,7 @@ function eventHandler(button) {
 
         if (previousKeypress === 'equals') {
             displayValue = operate(displayValue, repeatMemory[1], repeatMemory[0]);
-            calculatorDisplay.textContent = displayValue;
+            calculatorDisplay.textContent = displayValue.toString().substring(0, displayLengthInDigits);
             operator = '';
             return;
         }
@@ -62,7 +63,8 @@ function eventHandler(button) {
         repeatMemory = [displayValue, storedOperator];
         let result = operate(storedNumber, storedOperator, displayValue)
         displayValue = result;
-        calculatorDisplay.textContent = displayValue;
+        
+        calculatorDisplay.textContent = displayValue.toString().substring(0, displayLengthInDigits);
         previousKeypress = 'equals';
         //storedOperator = ''
         return;
@@ -71,6 +73,9 @@ function eventHandler(button) {
 
 
     if (operators.includes(button)) {
+        if (previousKeypress === button) {return}
+
+
         repeatMemory = [displayValue, storedOperator];
         if (storedNumber && storedOperator && previousKeypress != 'equals') {
             let result = operate(storedNumber, storedOperator, displayValue);
@@ -87,7 +92,7 @@ function eventHandler(button) {
 
     previousKeypress = button;
 
-    calculatorDisplay.textContent = displayValue;
+    calculatorDisplay.textContent = displayValue.toString().substring(0, displayLengthInDigits);
 
 }
 
