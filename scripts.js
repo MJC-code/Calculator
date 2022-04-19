@@ -57,9 +57,9 @@ function eventHandler(button) {
         repeatMemory = [displayValue, storedOperator];
         let result = operate(storedNumber, storedOperator, displayValue)
         displayValue = result;
-        storedNumber = ''
         calculatorDisplay.textContent = displayValue;
         previousKeypress = 'equals';
+        storedOperator = ''
         return;
     }
 
