@@ -4,11 +4,18 @@
     font-size: 36px;
 }
 
+body {
+    padding: 30px;
+  
+}
 #gridContainer {
+    box-sizing: border-box;
     display: grid;
     grid-template-columns: 1;
     grid-template-rows: 2;
-    width: 240px;
+    width: auto;
+   
+
 }
 
 #buttons {

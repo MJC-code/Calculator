@@ -43,8 +43,8 @@ function eventHandler(button) {
 
     if (digits.includes(button)) {
         
-        if (displayValue.length < displayLengthInDigits) {
-            if (displayValue == '0' || operators.includes(previousKeypress)) {
+        if (displayValue.length < displayLengthInDigits || operators.includes(previousKeypress)) {
+            if (displayValue == '0' || operators.includes(previousKeypress) || previousKeypress === 'equals') {
                 displayValue = button;
             } else { displayValue += button }
         }
@@ -74,7 +74,6 @@ function eventHandler(button) {
 
     if (operators.includes(button)) {
         if (previousKeypress === button) {return}
-
 
         repeatMemory = [displayValue, storedOperator];
         if (storedNumber && storedOperator && previousKeypress != 'equals') {
