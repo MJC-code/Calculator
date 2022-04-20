@@ -29,11 +29,11 @@ function eventHandler(button) {
     }
 
     if (button === 'point') {
+        if (operators.includes(previousKeypress)) {displayValue = "0"}
         if (!displayValue.includes('.')) displayValue += '.';
     }
 
     if (button === 'plusMinus') {
-
         if (!displayValue.startsWith('-')) {
             if (displayValue.length < displayLengthInDigits) {
                 displayValue = '-' + displayValue;
@@ -62,7 +62,6 @@ function eventHandler(button) {
             result = operate(displayValue, repeatMemory[1], repeatMemory[0]);
             displayValue = result;
             updateDisplay(result);
-            //previousKeypress = '';
             return;
         }
         
