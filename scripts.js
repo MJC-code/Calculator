@@ -20,7 +20,8 @@ function eventHandler(button) {
 
     if (button === 'backspace') {
         displayValue = displayValue.slice(0, -1);
-        if (displayValue === '') displayValue = '0';
+        if (displayValue === '') displayValue = '0'
+        previousKeypress = '';
     }
 
     if (button === 'clear') {
@@ -28,6 +29,7 @@ function eventHandler(button) {
         storedNumber = '';
         storedOperator = '';
         repeatMemory = [];
+        previousKeypress = ''
     }
 
     if (button === 'point') {
@@ -39,10 +41,10 @@ function eventHandler(button) {
             displayValue = '-' + displayValue;
         }
         else displayValue = displayValue.slice(1,);
+        previousKeypress = ''
     }
 
     if (digits.includes(button)) {
-        
         if (displayValue.length < displayLengthInDigits || operators.includes(previousKeypress)) {
             if (displayValue == '0' || operators.includes(previousKeypress) || previousKeypress === 'equals') {
                 displayValue = button;
@@ -54,26 +56,29 @@ function eventHandler(button) {
         if (!storedOperator) { return };
 
         if (previousKeypress === 'equals') {
-            displayValue = operate(displayValue, repeatMemory[1], repeatMemory[0]);
-            calculatorDisplay.textContent = displayValue.toString().substring(0, displayLengthInDigits);
-            operator = '';
+            result = operate(displayValue, repeatMemory[1], repeatMemory[0]);
+            calculatorDisplay.textContent = result.toString().substring(0, displayLengthInDigits);
+            preveiousOperator = '';
             return;
         }
 
         repeatMemory = [displayValue, storedOperator];
-        let result = operate(storedNumber, storedOperator, displayValue)
+        result = operate(storedNumber, storedOperator, displayValue)
         displayValue = result;
-        
         calculatorDisplay.textContent = displayValue.toString().substring(0, displayLengthInDigits);
         previousKeypress = 'equals';
-        //storedOperator = ''
         return;
     }
 
 
 
     if (operators.includes(button)) {
-        if (previousKeypress === button) {return}
+       // if (previousKeypress === button) {return}
+
+        if (operators.includes(previousKeypress)) {
+            storedOperator = button;
+            return;
+        }
 
         repeatMemory = [displayValue, storedOperator];
         if (storedNumber && storedOperator && previousKeypress != 'equals') {
@@ -90,21 +95,21 @@ function eventHandler(button) {
     }
 
     previousKeypress = button;
-
     calculatorDisplay.textContent = displayValue.toString().substring(0, displayLengthInDigits);
-
 }
 
 
 
 
 function operate(a, operator, b) {
-
-    if (operator === 'add') return add(a, b);
-    if (operator === 'subtract') return subtract(a, b);
-    if (operator === 'multiply') return multiply(a, b);
-    if (operator === 'divide') return divide(a, b);
-    console.log('Error - Operator not recognised')
+    let maxDisplayNumber = displayLengthInDigits ** 10 - 1;
+    let result = ''
+    if (operator === 'add') result = add(a, b);
+    if (operator === 'subtract') result = subtract(a, b);
+    if (operator === 'multiply') result = multiply(a, b);
+    if (operator === 'divide') result = divide(a, b);
+    if (Math.abs(result) <= maxDisplayNumber) {return result}
+    else {return "Error"}
 }
 
 function add(a, b) {
