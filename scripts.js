@@ -8,7 +8,7 @@ let storedNumber = '';
 let storedOperator = '';
 let previousKeypress = '';
 let repeatMemory = [];
-const displayLengthInDigits = 11;
+const displayLengthInDigits = 10;
 
 document.getElementById('buttons').addEventListener('click', event => {
     if (event.target.type === "button") eventHandler(event.target.id)
@@ -25,11 +25,7 @@ function eventHandler(button) {
     }
 
     if (button === 'clear') {
-        displayValue = 0;
-        storedNumber = '';
-        storedOperator = '';
-        repeatMemory = [];
-        previousKeypress = ''
+        clear()
     }
 
     if (button === 'point') {
@@ -40,8 +36,12 @@ function eventHandler(button) {
         if (!displayValue.startsWith('-')) {
             displayValue = '-' + displayValue;
         }
-        else displayValue = displayValue.slice(1,);
-        previousKeypress = ''
+        else {
+            displayValue = displayValue.slice(1,);
+            previousKeypress = ''
+        }
+        updateDisplay(displayValue);
+        return;
     }
 
     if (digits.includes(button)) {
@@ -57,7 +57,7 @@ function eventHandler(button) {
 
         if (previousKeypress === 'equals') {
             result = operate(displayValue, repeatMemory[1], repeatMemory[0]);
-            calculatorDisplay.textContent = result.toString().substring(0, displayLengthInDigits);
+            updateDisplay(result);
             preveiousOperator = '';
             return;
         }
@@ -65,15 +65,13 @@ function eventHandler(button) {
         repeatMemory = [displayValue, storedOperator];
         result = operate(storedNumber, storedOperator, displayValue)
         displayValue = result;
-        calculatorDisplay.textContent = displayValue.toString().substring(0, displayLengthInDigits);
+        updateDisplay(displayValue)
         previousKeypress = 'equals';
         return;
     }
 
-
-
     if (operators.includes(button)) {
-       // if (previousKeypress === button) {return}
+         if (previousKeypress === button) {return}
 
         if (operators.includes(previousKeypress)) {
             storedOperator = button;
@@ -95,11 +93,26 @@ function eventHandler(button) {
     }
 
     previousKeypress = button;
-    calculatorDisplay.textContent = displayValue.toString().substring(0, displayLengthInDigits);
+    updateDisplay(displayValue);
+    //calculatorDisplay.textContent = displayValue.toString().substring(0, displayLengthInDigits);
 }
 
 
+function updateDisplay(value) {
+    if (typeof (value) !== "string") {
+        value = value.toString();
+    }
+    value = value.slice(0, displayLengthInDigits)
+    calculatorDisplay.textContent = value;
+}
 
+function clear() {
+    displayValue = 0;
+    storedNumber = '';
+    storedOperator = '';
+    repeatMemory = [];
+    previousKeypress = ''
+}
 
 function operate(a, operator, b) {
     let maxDisplayNumber = displayLengthInDigits ** 10 - 1;
@@ -108,8 +121,8 @@ function operate(a, operator, b) {
     if (operator === 'subtract') result = subtract(a, b);
     if (operator === 'multiply') result = multiply(a, b);
     if (operator === 'divide') result = divide(a, b);
-    if (Math.abs(result) <= maxDisplayNumber) {return result}
-    else {return "Error"}
+    if (Math.abs(result) <= maxDisplayNumber) { return result }
+    else { return "Error" }
 }
 
 function add(a, b) {
