@@ -16,6 +16,7 @@ document.getElementById('buttons').addEventListener('click', event => {
 
 
 function eventHandler(button) {
+    if (displayValue === "Error") {clear()}
     if (typeof displayValue === "number") { displayValue = displayValue.toString() }
 
     if (button === 'backspace') {
