@@ -8,7 +8,7 @@ let storedNumber = '';
 let storedOperator = '';
 let previousKeypress = '';
 let repeatMemory = [];
-const displayLengthInDigits = 10;
+const displayLengthInDigits = 11;
 
 document.getElementById('buttons').addEventListener('click', event => {
     if (event.target.type === "button") eventHandler(event.target.id)
@@ -33,8 +33,11 @@ function eventHandler(button) {
     }
 
     if (button === 'plusMinus') {
+
         if (!displayValue.startsWith('-')) {
-            displayValue = '-' + displayValue;
+            if (displayValue.length < displayLengthInDigits) {
+                displayValue = '-' + displayValue;
+            }
         }
         else {
             displayValue = displayValue.slice(1,);
@@ -54,14 +57,15 @@ function eventHandler(button) {
 
     if (button === 'equals') {
         if (!storedOperator) { return };
-
+        
         if (previousKeypress === 'equals') {
             result = operate(displayValue, repeatMemory[1], repeatMemory[0]);
+            displayValue = result;
             updateDisplay(result);
-            preveiousOperator = '';
+            //previousKeypress = '';
             return;
         }
-
+        
         repeatMemory = [displayValue, storedOperator];
         result = operate(storedNumber, storedOperator, displayValue)
         displayValue = result;
@@ -71,7 +75,7 @@ function eventHandler(button) {
     }
 
     if (operators.includes(button)) {
-         if (previousKeypress === button) {return}
+        if (previousKeypress === button) { return }
 
         if (operators.includes(previousKeypress)) {
             storedOperator = button;
@@ -94,7 +98,6 @@ function eventHandler(button) {
 
     previousKeypress = button;
     updateDisplay(displayValue);
-    //calculatorDisplay.textContent = displayValue.toString().substring(0, displayLengthInDigits);
 }
 
 
