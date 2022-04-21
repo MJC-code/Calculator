@@ -41,6 +41,10 @@ button {
     border-radius: 8px;
 }
 
+button:active {
+    background-color: rgb(146, 146, 90);
+}
+
 #calculatorDisplay {
     border-radius: 8px;
     width: 240px;
