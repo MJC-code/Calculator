@@ -14,6 +14,22 @@ document.getElementById('buttons').addEventListener('click', event => {
     if (event.target.type === "button") eventHandler(event.target.id)
 })
 
+document.addEventListener('keydown', (event) => {
+    let name = event.key.toLowerCase();
+    console.log(`Key pressed ${name}`);
+    if (name === "escape") name = "clear";
+    if (name === "=" || name == "enter") {
+        event.preventDefault();  // override Enter key default behaviour
+        console.log(`Received name ${name}`);
+        name = "equals";
+    }
+    if (name === ".") name = "point";
+    if (name === "+") name = "add";
+    if (name === "-") name = "subtract";
+    if (name === "*") name = "multiply";
+    if (name === "/") name = "divide";
+    eventHandler(name);
+  }, false);
 
 function eventHandler(button) {
     if (displayValue === "Error") {clear()}
