@@ -47,6 +47,7 @@ button:active {
 }
 
 #calculatorDisplay {
+    margin-top: 16px;
     border-radius: 8px;
     width: 240px;
     height: 60px;
