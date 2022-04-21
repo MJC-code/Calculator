@@ -2,12 +2,16 @@
     box-sizing: border-box;
     font-family: monospace;
     font-size: 36px;
+    padding: 0;
+    margin: 0;
+
 }
 
 body {
     padding: 30px;
-  
+
 }
+
 #gridContainer {
     box-sizing: border-box;
     display: grid;
@@ -15,49 +19,57 @@ body {
     grid-template-rows: 2;
     width: fit-content;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
-   
+    background-color: rgba(161, 161, 161, 0.596);
+    border: solid rgba(161, 161, 161, 0.596); 20px;
+    border-radius: 10px;
+    outline: solid black 2px;
 
 }
 
 #buttons {
     display: grid;
-    background-color: darkslategrey;
+    background-color: rgba(161, 161, 161, 0.596);
     grid-template-columns: repeat(4, 60px);
     grid-template-rows: repeat(5, 60px);
+    
 }
 
 button {
-    font-size: 16px;   
-    background-color: lightgray;
+    font-size: 16px;
+    
+    border: solid black 1px;
+    border-radius: 8px;
 }
 
 #calculatorDisplay {
-    border-radius: 8px 8px 0px 0px; 
+    border-radius: 8px;
     width: 240px;
     height: 60px;
     text-align: right;
     background-color: black;
     color: green;
+    margin-bottom: 20px;
 }
 
 [id='0'] {
     grid-column-start: 1;
     grid-column-end: 3;
     grid-row: 5;
+
 }
 
 [id='clear'] {
     background-color: orangered;
-    
+
 }
 
 [id='equals'] {
     background-color: rgba(161, 161, 161, 0.596);
-    color:antiquewhite;
-   
+    color: antiquewhite;
+
 }
 
 .operator {
     background-color: rgba(161, 161, 161, 0.87);
-    color:antiquewhite;
+    color: antiquewhite;
 }
